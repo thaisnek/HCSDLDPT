@@ -5,12 +5,15 @@ from sklearn.preprocessing import StandardScaler
 from processing.extract_features import extract_features
 from database.db_manager import get_all_records
 
-def search_similar_top5(file_path):
+def search_similar_top5(file_path, input_feat=None):
     """
     Tìm kiếm 5 file giống nhất từ database.
     """
-    # 1. Trích xuất đặc trưng file input
-    input_feat = extract_features(file_path).reshape(1, -1)
+    # 1. Trích xuất đặc trưng file input (dùng lại nếu đã có sẵn)
+    if input_feat is None:
+        input_feat = extract_features(file_path).reshape(1, -1)
+    else:
+        input_feat = input_feat.reshape(1, -1)
     
     # 2. Lấy dữ liệu từ DB
     file_info, db_features = get_all_records()

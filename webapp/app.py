@@ -54,7 +54,7 @@ if uploaded:
     # 4. Tìm kiếm
     st.subheader("3. Kết Quả Tìm Kiếm: Top 5 file giống nhất")
     with st.spinner("Đang so sánh Cosine Similarity với CSDL..."):
-        results, all_sims = search_similar_top5(temp_path)
+        results, all_sims = search_similar_top5(temp_path, input_feat=features)
         
         if not results:
             st.warning("CSDL trống! Hãy chạy `python run_extract.py` trước để tạo CSDL.")
