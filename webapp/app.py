@@ -106,5 +106,23 @@ if uploaded:
                 worst_feat = min(bd, key=bd.get)
                 st.markdown(f"Most similar in: **{best_feat}** ({bd[best_feat]:.2f}) | Most different in: **{worst_feat}** ({bd[worst_feat]:.2f})")
 
+                _feat_meaning = {
+                    'MFCC': 'âm sắc / đường bao phổ tổng thể',
+                    'Chroma': 'cao độ / nội dung giai điệu',
+                    'Spectral Centroid': 'độ sáng của âm thanh',
+                    'Spectral Bandwidth': 'độ rộng phổ / mức phong phú hài âm',
+                    'Spectral Flatness': 'mức độ hơi thở / nhiễu phổ',
+                    'Spectral Rolloff': 'mức năng lượng tần số cao',
+                }
+                high_feats = [k for k in bd if bd[k] >= 0.75]
+                if high_feats:
+                    s1 = "File này giống query chủ yếu ở " + " và ".join(f"**{k}**" for k in high_feats) + \
+                         ", cho thấy " + " và ".join(_feat_meaning[k] for k in high_feats) + " khá gần nhau."
+                else:
+                    s1 = "File này tương đồng với query chủ yếu qua điểm cosine tổng thể, nhưng không có nhóm đặc trưng nào đạt mức tương đồng cao (≥ 0.75)."
+                s2 = f"Điểm tương đồng cao nhất là **{best_feat}** ({bd[best_feat]:.2f}), phản ánh {_feat_meaning[best_feat]} gần với query."
+                s3 = f"Điểm khác biệt lớn nhất nằm ở **{worst_feat}** ({bd[worst_feat]:.2f}), cho thấy {_feat_meaning[worst_feat]} khác query."
+                st.info(f"{s1} {s2} {s3}")
+
                 st.markdown("---")
 
