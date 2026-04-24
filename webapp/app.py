@@ -83,7 +83,7 @@ if uploaded:
                     
                 with col2:
                     st.markdown(f"**File:** `{res['filename']}`")
-                    
+
                     file_path = res['path']
                     if os.path.exists(file_path):
                         with open(file_path, 'rb') as f:
@@ -91,6 +91,20 @@ if uploaded:
                         st.audio(audio_bytes, format='audio/wav')
                     else:
                         st.warning(f"⚠️ Không tìm thấy file gốc tại `{file_path}`")
-                
+
+                bd = res['feature_breakdown']
+                feat_labels = ['MFCC', 'Chroma', 'Spectral Centroid', 'Spectral Bandwidth', 'Spectral Flatness', 'Spectral Rolloff']
+                feat_values = [bd[k] for k in feat_labels]
+                fig_bd, ax_bd = plt.subplots(figsize=(6, 3))
+                ax_bd.barh(feat_labels[::-1], feat_values[::-1])
+                ax_bd.set_xlim(0, 1)
+                ax_bd.set_xlabel("Similarity Score")
+                st.pyplot(fig_bd)
+                plt.close(fig_bd)
+
+                best_feat = max(bd, key=bd.get)
+                worst_feat = min(bd, key=bd.get)
+                st.markdown(f"Most similar in: **{best_feat}** ({bd[best_feat]:.2f}) | Most different in: **{worst_feat}** ({bd[worst_feat]:.2f})")
+
                 st.markdown("---")
 
