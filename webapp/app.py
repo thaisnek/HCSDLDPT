@@ -6,9 +6,7 @@ import streamlit as st
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
-import numpy as np
 import tempfile
-import pandas as pd
 from search.search_similar import search_similar_top5
 from processing.extract_features import extract_features
 
