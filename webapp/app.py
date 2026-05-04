@@ -57,16 +57,17 @@ if uploaded:
         results, all_sims = search_similar_top5(temp_path, input_feat=features)
         
         if not results:
-            st.warning("CSDL trống! Hãy chạy `python run_extract.py` trước để tạo CSDL.")
+            st.warning("CSDL trống hoặc chưa tạo Index! Hãy chạy `python run_extract.py` trước để tạo CSDL.")
         else:
-            # Hiển thị biểu đồ phân bố similarity
-            st.markdown("**Biểu đồ phân bố độ tương đồng (Similarity Distribution)**")
-            fig_sim, ax_sim = plt.subplots(figsize=(10, 2))
-            ax_sim.hist(all_sims, bins=30, color='skyblue', edgecolor='black')
-            ax_sim.set_title("Phân bố Cosine Similarity của file đầu vào với toàn bộ CSDL")
-            ax_sim.set_xlabel("Độ tương đồng (Cosine Similarity)")
-            ax_sim.set_ylabel("Số lượng file")
-            st.pyplot(fig_sim)
+            if all_sims is not None:
+                # Hiển thị biểu đồ phân bố similarity
+                st.markdown("**Biểu đồ phân bố độ tương đồng (Similarity Distribution)**")
+                fig_sim, ax_sim = plt.subplots(figsize=(10, 2))
+                ax_sim.hist(all_sims, bins=30, color='skyblue', edgecolor='black')
+                ax_sim.set_title("Phân bố Cosine Similarity của file đầu vào với toàn bộ CSDL")
+                ax_sim.set_xlabel("Độ tương đồng (Cosine Similarity)")
+                ax_sim.set_ylabel("Số lượng file")
+                st.pyplot(fig_sim)
             
             st.markdown("---")
             st.markdown("### 🏆 TOP 5 KẾT QUẢ:")
@@ -76,7 +77,7 @@ if uploaded:
                 
                 with col1:
                     st.markdown(f"### #{i}")
-                    st.metric(label="Độ tương đồng", value=f"{res['similarity']:.4f}")
+                    st.metric(label="Cosine Similarity", value=f"{res['similarity']:.4f}")
                     st.markdown(f"**Nhãn:** `{res['label'].upper()}`")
                     
                 with col2:
